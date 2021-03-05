@@ -118,6 +118,7 @@ func defaultPushConsumerOptions() consumerOptions {
 		ConsumerModel:              Clustering,
 		AutoCommit:                 true,
 		Resolver:                   primitive.NewHttpResolver("DEFAULT"),
+		ConsumeTimeout:             30 * time.Second,
 	}
 	opts.ClientOptions.GroupName = "DEFAULT_CONSUMER"
 	return opts
@@ -272,5 +273,13 @@ func WithNameServer(nameServers primitive.NamesrvAddr) Option {
 func WithNameServerDomain(nameServerUrl string) Option {
 	return func(opts *consumerOptions) {
 		opts.Resolver = primitive.NewHttpResolver("DEFAULT", nameServerUrl)
+	}
+}
+
+//WithConsumeTimeout set consume timeout
+//default: 30s
+func WithConsumeTimeout(t time.Duration) Option {
+	return func(opts *consumerOptions) {
+		opts.ConsumeTimeout = t
 	}
 }
